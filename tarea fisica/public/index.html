@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#56AA90',
+                        secondary: '#B4D9AC',
+                        accent: '#2D5016',
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Quiz fisica II</title>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>FÍSICA II</h1>
+            <div class="subtitle">Quiz Interactivo</div>
+        </header>
+        <div id="quiz-grid"></div>
+    </main>
+    <script src="js/quiz-engine.js"></script>
+    <script src="js/history-manager.js"></script>
+    <script src="js/chart-renderer.js"></script>
+    <script src="js/ui-renderer.js"></script>
+    <script src="js/app-controller.js"></script>
+    <script>
+ const preguntasData = [
+     {
+         id: 1,
+         tema: "Péndulos",
+         pregunta: "¿De qué depende principalmente el período de un péndulo simple?",
+         opciones: ["De la masa del péndulo", "De la longitud del hilo", "De la amplitud de oscilación", "De la velocidad inicial"],
+         respuesta: 1,
+         hints: { correcto: "La fórmula T = 2π√(L/g) muestra que solo L y g determinan el período.", incorrecto: "La masa no influye en el período." }
+     },
+     {
+         id: 2,
+         tema: "Péndulos",
+         pregunta: "¿Cuál es la fórmula del período de un péndulo simple?",
+         opciones: ["T = 2π√(m/k)", "T = 2π√(L/g)", "T = 2π√(g/L)", "T = 2π√(k/m)"],
+         respuesta: 1,
+         hints: { correcto: "L es la longitud del hilo y g es la aceleración de la gravedad.", incorrecto: "La fórmula con m y k corresponde al sistema masa-resorte." }
+     },
+     {
+         id: 3,
+         tema: "Resortes",
+         pregunta: "¿Qué establece la Ley de Hooke?",
+         opciones: ["F = ma", "F = -kx", "F = mv²/r", "F = Gm₁m₂/r²"],
+         respuesta: 1,
+         hints: { correcto: "La fuerza restauradora es proporcional a la deformación x.", incorrecto: "F = ma es la Segunda Ley de Newton." }
+     },
+     {
+         id: 4,
+         tema: "Resortes",
+         pregunta: "¿Qué representa la constante 'k' en un resorte?",
+         opciones: ["La masa del resorte", "La elongación máxima", "La rigidez o constante elástica", "La frecuencia de oscilación"],
+         respuesta: 2,
+         hints: { correcto: "Un valor alto de k significa que el resorte es muy rígido.", incorrecto: "La elongación máxima es la amplitud." }
+     },
+     {
+         id: 5,
+         tema: "Ondas",
+         pregunta: "¿Cuál es la ecuación fundamental de las ondas?",
+         opciones: ["v = f · λ", "v = f / λ", "v = λ / T²", "v = f · T"],
+         respuesta: 0,
+         hints: { correcto: "Velocidad = frecuencia × longitud de onda.", incorrecto: "v = f · T es incorrecto porque T = 1/f." }
+     }
+ ];
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AppController.iniciar();
+        });
+    </script>
+</body>
+</html>
