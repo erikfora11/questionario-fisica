@@ -18,7 +18,7 @@ const QuizEngine = (() => {
 
     async function cargarPreguntas(backupQuestions) {
         try {
-            const response = await fetch('data/preguntas.json');
+            const response = await fetch(window.location.origin + '/data/preguntas.json');
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             jsonCargado = true;

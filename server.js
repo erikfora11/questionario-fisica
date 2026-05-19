@@ -17,12 +17,22 @@ const mimeTypes = {
 const server = http.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
     
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204);
+        res.end();
+        return;
+    }
+    
     // Remove query string if present
     let urlPath = req.url.split('?')[0];
     
     let filePath;
     if (urlPath === '/') {
-        filePath = path.join(__dirname, 'public/index.html');
+        filePath = path.join(__dirname, 'public', 'index.html');
     } else if (urlPath.startsWith('/data/')) {
         filePath = path.join(__dirname, urlPath);
     } else {
@@ -34,6 +44,7 @@ const server = http.createServer((req, res) => {
     
     fs.readFile(filePath, (error, content) => {
         if (error) {
+            console.error('Error reading file:', filePath, error.code);
             if (error.code === 'ENOENT') {
                 res.writeHead(404, { 'Content-Type': 'text/html' });
                 res.end('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>404</title></head><body><h1>404 - Archivo no encontrado</h1></body></html>');
