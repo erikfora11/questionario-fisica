@@ -22,13 +22,11 @@ const server = http.createServer((req, res) => {
     
     let filePath;
     if (urlPath === '/') {
-        filePath = './public/index.html';
+        filePath = path.join(__dirname, 'public/index.html');
     } else if (urlPath.startsWith('/data/')) {
-        // Serve data files from data/ directory
-        filePath = '.' + urlPath;
+        filePath = path.join(__dirname, urlPath);
     } else {
-        // Serve static files from public/ directory
-        filePath = './public' + urlPath;
+        filePath = path.join(__dirname, 'public', urlPath);
     }
     
     const extname = String(path.extname(filePath)).toLowerCase();
@@ -38,19 +36,19 @@ const server = http.createServer((req, res) => {
         if (error) {
             if (error.code === 'ENOENT') {
                 res.writeHead(404, { 'Content-Type': 'text/html' });
-                res.end('<h1>404 - Archivo no encontrado</h1>', 'utf-8');
+                res.end('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>404</title></head><body><h1>404 - Archivo no encontrado</h1></body></html>');
             } else {
                 res.writeHead(500);
-                res.end(`Server Error: ${error.code}`, 'utf-8');
+                res.end('Server Error: ' + error.code);
             }
         } else {
             res.writeHead(200, { 'Content-Type': contentType });
-            res.end(content, 'utf-8');
+            res.end(content);
         }
     });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`\nServidor corriendo en http://localhost:${PORT}`);
     console.log('Presiona Ctrl+C para detener el servidor\n');
 });
