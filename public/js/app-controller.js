@@ -1,6 +1,6 @@
 const AppController = (function() {
 async function iniciar() {
-         await QuizEngine.cargarPreguntas([]);
+         await QuizEngine.cargarPreguntas();
          UIRenderer.renderLogin(true);
      }
 

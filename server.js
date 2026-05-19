@@ -10,16 +10,13 @@ const mimeTypes = {
     '.js': 'application/javascript',
     '.json': 'application/json',
     '.png': 'image/png',
-    '.jpg': 'image/jpg',
-    '.svg': 'image/svg+xml'
+    '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon'
 };
 
 const server = http.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
-    
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
@@ -27,8 +24,10 @@ const server = http.createServer((req, res) => {
         return;
     }
     
-    // Remove query string if present
     let urlPath = req.url.split('?')[0];
+    if (urlPath !== '/' && urlPath.endsWith('/')) {
+        urlPath = urlPath.slice(0, -1);
+    }
     
     let filePath;
     if (urlPath === '/') {
@@ -44,14 +43,9 @@ const server = http.createServer((req, res) => {
     
     fs.readFile(filePath, (error, content) => {
         if (error) {
-            console.error('Error reading file:', filePath, error.code);
-            if (error.code === 'ENOENT') {
-                res.writeHead(404, { 'Content-Type': 'text/html' });
-                res.end('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>404</title></head><body><h1>404 - Archivo no encontrado</h1></body></html>');
-            } else {
-                res.writeHead(500);
-                res.end('Server Error: ' + error.code);
-            }
+            console.error('Error reading file:', filePath, error);
+            res.writeHead(404, { 'Content-Type': 'text/html' });
+            res.end('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>404</title><style>body{font-family:sans-serif;text-align:center;padding:50px}button{background:#56AA90;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer}</style></head><body><h1>404 - No encontrado</h1><p>La página que buscas no existe.</p><button onclick="window.location.href=\'/\'">Volver al inicio</button></body></html>');
         } else {
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(content);
@@ -60,6 +54,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`\nServidor corriendo en http://localhost:${PORT}`);
-    console.log('Presiona Ctrl+C para detener el servidor\n');
+    console.log(`Server running on port ${PORT}`);
 });
